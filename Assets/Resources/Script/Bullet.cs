@@ -1,0 +1,38 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Bullet : MonoBehaviour
+{
+    //移动速度
+    public float speed=100f;
+    //发射者
+    public BaseTank tank;
+    //炮弹模型
+    GameObject skin;
+    //物理
+    Rigidbody rigidBody;
+
+    public void Init()
+    {
+        GameObject skinRes=Resources.Load("Prefab/BulletPrefab") as GameObject;
+        skin=Instantiate(skinRes);
+        skin.transform.parent=this.transform;
+        skin.transform.localPosition=Vector3.zero;
+        skin.transform.localEulerAngles=Vector3.zero;
+        //物理
+        rigidBody=gameObject.AddComponent<Rigidbody>();
+        rigidBody.useGravity=false;
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
