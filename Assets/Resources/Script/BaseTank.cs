@@ -19,6 +19,13 @@ public class BaseTank : MonoBehaviour
     //发射点
     public Transform firePoint;
     protected Rigidbody rigidBody;
+
+    //炮弹cd时间
+    public float fireCd=0.5f;
+    //上一次发射炮弹的时间
+    public float lastFireTime=0;
+    //tank生命值
+    public float hp=100;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,5 +53,40 @@ public class BaseTank : MonoBehaviour
     public virtual void Update()
     {
         
+    }
+    public Bullet Fire()
+    {
+        if(IsDie())
+        {
+            return null;
+        }
+        GameObject bulletObj=new GameObject("bullet");
+        Bullet bullet=bulletObj.AddComponent<Bullet>();
+        bullet.Init();
+        bullet.tank=this;
+        //位置
+        bullet.transform.position=firePoint.position;
+        bullet.transform.rotation=firePoint.rotation;
+        //更新时间
+        lastFireTime=Time.time;
+        return bullet;
+    }
+    public bool IsDie()
+    {
+        return hp<=0;
+    }
+    public void Attacked(float att)
+    {
+        if(IsDie())
+        {
+            return;
+        }
+        hp-=att;
+        if(IsDie())
+        {
+            GameObject obj=Resources.Load("Prefab/explosion") as GameObject;
+            GameObject explosion=Instantiate(obj,transform.position,transform.rotation);
+            explosion.transform.SetParent(this.transform);
+        }
     }
 }

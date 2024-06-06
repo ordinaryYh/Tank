@@ -33,6 +33,18 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        transform.position+=transform.forward*speed*Time.deltaTime;
+    }
+    void OnCollisionEnter(Collision other)
+    {
+        GameObject collObj=other.gameObject;
+        BaseTank hitTank=collObj.GetComponent<BaseTank>();
+        if(hitTank==tank)
+        {
+            return;
+        }
+        GameObject explode=Resources.Load("Prefab/fire") as GameObject;
+        Instantiate(explode,transform.position,transform.rotation);
+        Destroy(gameObject);
     }
 }
