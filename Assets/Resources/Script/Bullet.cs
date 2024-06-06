@@ -43,6 +43,10 @@ public class Bullet : MonoBehaviour
         {
             return;
         }
+        if(hitTank!=null)
+        {
+            hitTank.Attacked(35);
+        }
         GameObject explode=Resources.Load("Prefab/fire") as GameObject;
         Instantiate(explode,transform.position,transform.rotation);
         Destroy(gameObject);
