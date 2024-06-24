@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         testtank();
+        PanelManager.Init();
+        PanelManager.Open<LoginPanel>();
     }
 
     // Update is called once per frame
