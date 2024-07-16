@@ -13,7 +13,7 @@ public class TipPanel : BasePanel
     public override void OnInit()
     {
         skinPath="Prefab/TipPanel";
-        layer=PanelManager.Layer.Panel;
+        layer=PanelManager.Layer.Tip;
     }
     //显示
     public override void OnShow(params object[] para)

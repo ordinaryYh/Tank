@@ -84,13 +84,15 @@ public class LoginPanel : BasePanel
             Debug.Log("登录成功");
             //进入游戏
             //添加坦克
-            GameObject tankObj=new GameObject("myTank");
-            CtrlTank ctrlTank=tankObj.AddComponent<CtrlTank>();
-            ctrlTank.Init("tankPrefab");
+            // GameObject tankObj=new GameObject("myTank");
+            // CtrlTank ctrlTank=tankObj.AddComponent<CtrlTank>();
+            // ctrlTank.Init("tankPrefab");
             //设置相机
-            tankObj.AddComponent<CameraFollow>();
+            // tankObj.AddComponent<CameraFollow>();
             //设置id
             GameManager.id=msg.id;
+            //打开房间列表界面
+            PanelManager.Open<RoomListPanel>();
             //关闭界面
             Close();
         }
