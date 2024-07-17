@@ -30,7 +30,7 @@ public class RoomListPanel : BasePanel
     {
         //寻找组件
         idText=skin.transform.Find("InfoPanel/IdText").GetComponent<Text>();
-        scoreText=skin.transform.Find("InfoPanel/IdText").GetComponent<Text>();
+        scoreText=skin.transform.Find("InfoPanel/ScoreText").GetComponent<Text>();
         createButton=skin.transform.Find("CtrlPanel/CreateButton").GetComponent<Button>();
         reflashButton=skin.transform.Find("CtrlPanel/ReflashButton").GetComponent<Button>();
         content=skin.transform.Find("ListPanel/Scroll View/Viewport/Content");
@@ -76,10 +76,13 @@ public class RoomListPanel : BasePanel
     {
         MsgGetRoomList msg=(MsgGetRoomList)msgBase;
         //清除房间列表
-        for(int i=content.childCount-1;i>=0;i--)
+        if(content.childCount>=0)
         {
-            GameObject o=content.GetChild(i).gameObject;
-            Destroy(o);
+            for(int i=content.childCount-1;i>=0;i--)
+            {
+                GameObject o=content.GetChild(i).gameObject;
+                Destroy(o);
+            }
         }
         //如果没有房间，不需要进一步处理
         if(msg.rooms==null) return;

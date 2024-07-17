@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static string id="";
+    public static string id=""; //当前客户端玩家的id
     
     void Start()
     {
@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
         NetManager.AddMsgListener("MsgKick",OnMsgKick);
         //初始化
         PanelManager.Init();
+        BattleManager.Init();
         //打开登录
         PanelManager.Open<LoginPanel>();
     }

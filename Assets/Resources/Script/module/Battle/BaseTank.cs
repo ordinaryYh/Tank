@@ -26,6 +26,13 @@ public class BaseTank : MonoBehaviour
     public float lastFireTime=0;
     //tank生命值
     public float hp=100;
+    //属于哪一名玩家
+    public string id="";
+    //阵营
+    public int camp=0;
+
+
+
     // Start is called before the first frame update
     void Start()
     {

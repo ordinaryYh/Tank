@@ -138,7 +138,7 @@ public class RoomPanel : BasePanel
         }
         else
         {
-            PanelManager.Open<TipPanel>("开战失败！两队至少都需要一名玩家，只有对战可以开战");
+            PanelManager.Open<TipPanel>("开战失败！两队至少都需要一名玩家，只有队长可以开战");
         }
     }
 }
