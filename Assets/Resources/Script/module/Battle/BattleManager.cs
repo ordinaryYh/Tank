@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BattleManager 
+public class BattleManager
 {
     //战场中的坦克
-    public static Dictionary<string,BaseTank> tanks=
+    public static Dictionary<string, BaseTank> tanks =
         new Dictionary<string, BaseTank>();
-    
+
     //初始化
     public static void Init()
     {
         //添加监听
-        NetManager.AddMsgListener("MsgEnterBattle",OnMsgEnterBattle);
-        NetManager.AddMsgListener("MsgBattleResult",OnMsgBattleResult);
-        NetManager.AddMsgListener("MsgLeaveBattle",OnMsgLeaveBattle);
+        NetManager.AddMsgListener("MsgEnterBattle", OnMsgEnterBattle);
+        NetManager.AddMsgListener("MsgBattleResult", OnMsgBattleResult);
+        NetManager.AddMsgListener("MsgLeaveBattle", OnMsgLeaveBattle);
     }
 
     //添加坦克
-    public static void AddTank(string id,BaseTank tank)
+    public static void AddTank(string id, BaseTank tank)
     {
-        tanks[id]=tank;
+        tanks[id] = tank;
     }
 
     //删除坦克
@@ -33,7 +33,7 @@ public class BattleManager
     //获取坦克
     public static BaseTank GetTank(string id)
     {
-        if(tanks.ContainsKey(id))
+        if (tanks.ContainsKey(id))
         {
             return tanks[id];
         }
@@ -50,7 +50,7 @@ public class BattleManager
     public static void Reset()
     {
         //场景
-        foreach(BaseTank tank in tanks.Values)
+        foreach (BaseTank tank in tanks.Values)
         {
             MonoBehaviour.Destroy(tank.gameObject);
         }
@@ -61,7 +61,7 @@ public class BattleManager
     //收到战斗协议
     public static void OnMsgEnterBattle(MsgBase msgBase)
     {
-        MsgEnterBattle msg=(MsgEnterBattle)msgBase;
+        MsgEnterBattle msg = (MsgEnterBattle)msgBase;
         EnterBattle(msg);
     }
     //开始战斗
@@ -73,7 +73,7 @@ public class BattleManager
         PanelManager.Close("RoomPanel");
         PanelManager.Close("ResultPanel");
         //产生坦克
-        for(int i=0;i<msg.tanks.Length;i++)
+        for (int i = 0; i < msg.tanks.Length; i++)
         {
             GenerateTank(msg.tanks[i]);
         }
@@ -82,34 +82,34 @@ public class BattleManager
     public static void GenerateTank(TankInfo tankInfo)
     {
         //GameObject
-        string objName="Tank_"+tankInfo.id;
-        GameObject tankObj=new GameObject(objName);
+        string objName = "Tank_" + tankInfo.id;
+        GameObject tankObj = new GameObject(objName);
         //AddComponent
-        BaseTank tank=null;
-        if(tankInfo.id==GameManager.id)
+        BaseTank tank = null;
+        if (tankInfo.id == GameManager.id)
         {
-            tank=tankObj.AddComponent<CtrlTank>();
+            tank = tankObj.AddComponent<CtrlTank>();
         }
         else
         {
-            tank=tankObj.AddComponent<SyncTank>();
+            tank = tankObj.AddComponent<SyncTank>();
         }
         //camera
-        if(tankInfo.id==GameManager.id)
+        if (tankInfo.id == GameManager.id)
         {
-            CameraFollow cf=tankObj.AddComponent<CameraFollow>();
+            CameraFollow cf = tankObj.AddComponent<CameraFollow>();
         }
         //属性
-        tank.camp=tankInfo.camp;
-        tank.id=tankInfo.id;
-        tank.hp=tankInfo.hp;
+        tank.camp = tankInfo.camp;
+        tank.id = tankInfo.id;
+        tank.hp = tankInfo.hp;
         //pod rotation
-        Vector3 pos=new Vector3(tankInfo.x,tankInfo.y,tankInfo.z);
-        Vector3 rot=new Vector3(tankInfo.ex,tankInfo.ey,tankInfo.ez);
-        tank.transform.position=pos;
-        tank.transform.eulerAngles=rot;
+        Vector3 pos = new Vector3(tankInfo.x, tankInfo.y, tankInfo.z);
+        Vector3 rot = new Vector3(tankInfo.ex, tankInfo.ey, tankInfo.ez);
+        tank.transform.position = pos;
+        tank.transform.eulerAngles = rot;
         //init
-        if(tankInfo.camp==1)
+        if (tankInfo.camp == 1)
         {
             tank.Init("tankPrefab");
         }
@@ -118,20 +118,20 @@ public class BattleManager
             tank.Init("tankPrefab2");
         }
         //列表
-        AddTank(tankInfo.id,tank);
+        AddTank(tankInfo.id, tank);
     }
 
 
     //收到战斗结束协议
     public static void OnMsgBattleResult(MsgBase msgBase)
     {
-        MsgBattleResult msg=(MsgBattleResult)msgBase;
+        MsgBattleResult msg = (MsgBattleResult)msgBase;
         //判断是胜利还是失败
-        bool isWin=false;
-        BaseTank tank=GetCtrlTank();
-        if(tank!=null && tank.camp==msg.winCamp)
+        bool isWin = false;
+        BaseTank tank = GetCtrlTank();
+        if (tank != null && tank.camp == msg.winCamp)
         {
-            isWin=true;
+            isWin = true;
         }
         //显示界面
         PanelManager.Open<ResultPanel>(isWin);
@@ -140,10 +140,10 @@ public class BattleManager
     //收到玩家退出协议
     public static void OnMsgLeaveBattle(MsgBase msgBase)
     {
-        MsgLeaveBattle msg=(MsgLeaveBattle)msgBase;
+        MsgLeaveBattle msg = (MsgLeaveBattle)msgBase;
         //查找坦克
-        BaseTank tank=GetTank(msg.id);
-        if(tank==null)
+        BaseTank tank = GetTank(msg.id);
+        if (tank == null)
         {
             return;
         }

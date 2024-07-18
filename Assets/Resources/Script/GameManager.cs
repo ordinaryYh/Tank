@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static string id=""; //当前客户端玩家的id
-    
+    public static string id = ""; //当前客户端玩家的id
+
     void Start()
     {
-        NetManager.AddEventListener(NetManager.NetEvent.Close,OnConnectClose);
-        NetManager.AddMsgListener("MsgKick",OnMsgKick);
+        NetManager.AddEventListener(NetManager.NetEvent.Close, OnConnectClose);
+        NetManager.AddMsgListener("MsgKick", OnMsgKick);
         //初始化
         PanelManager.Init();
         BattleManager.Init();

@@ -19,51 +19,51 @@ public class RegisterPanel : BasePanel
     //初始化
     public override void OnInit()
     {
-        skinPath="Prefab/RegisterPanel";
-        layer=PanelManager.Layer.Panel;
+        skinPath = "Prefab/RegisterPanel";
+        layer = PanelManager.Layer.Panel;
     }
 
     //显示
     public override void OnShow(params object[] para)
     {
         //寻找组件
-        idInput=skin.transform.Find("IdInput").GetComponent<InputField>();
-        pwInput=skin.transform.Find("PwInput").GetComponent<InputField>();
-        repInput=skin.transform.Find("RepInput").GetComponent<InputField>();
-        regBtn=skin.transform.Find("RegisterBtn").GetComponent<Button>();
-        closeBtn=skin.transform.Find("CloseBtn").GetComponent<Button>();
+        idInput = skin.transform.Find("IdInput").GetComponent<InputField>();
+        pwInput = skin.transform.Find("PwInput").GetComponent<InputField>();
+        repInput = skin.transform.Find("RepInput").GetComponent<InputField>();
+        regBtn = skin.transform.Find("RegisterBtn").GetComponent<Button>();
+        closeBtn = skin.transform.Find("CloseBtn").GetComponent<Button>();
         //监听
         regBtn.onClick.AddListener(OnRegClick);
         closeBtn.onClick.AddListener(OnCloseClick);
         //网络协议监听
-        NetManager.AddMsgListener("MsgRegister",OnMsgRegister);
+        NetManager.AddMsgListener("MsgRegister", OnMsgRegister);
     }
 
     //关闭
     public override void OnClose()
     {
-        NetManager.RemoveMsgListener("MsgRegister",OnMsgRegister);
+        NetManager.RemoveMsgListener("MsgRegister", OnMsgRegister);
     }
 
     //当按下注册按钮
     public void OnRegClick()
     {
         //用户名密码为空
-        if(idInput.text=="" || pwInput.text=="")
+        if (idInput.text == "" || pwInput.text == "")
         {
             PanelManager.Open<TipPanel>("用户名和密码不能为空");
             return;
         }
         //两次密码不同
-        if(repInput.text!=pwInput.text)
+        if (repInput.text != pwInput.text)
         {
             PanelManager.Open<TipPanel>("两次输入的密码不同");
             return;
-        }   
+        }
         //发送
-        MsgRegister msg=new MsgRegister();
-        msg.id=idInput.text;
-        msg.pw=pwInput.text;
+        MsgRegister msg = new MsgRegister();
+        msg.id = idInput.text;
+        msg.pw = pwInput.text;
         NetManager.Send(msg);
     }
 
@@ -76,8 +76,8 @@ public class RegisterPanel : BasePanel
     //收到注册协议
     public void OnMsgRegister(MsgBase msgBase)
     {
-        MsgRegister msg=(MsgRegister)msgBase;
-        if(msg.result==0)
+        MsgRegister msg = (MsgRegister)msgBase;
+        if (msg.result == 0)
         {
             Debug.Log("注册成功");
             PanelManager.Open<TipPanel>("注册成功");

@@ -4,18 +4,18 @@ using UnityEngine;
 
 
 //心跳机制的协议
-public class MsgPing:MsgBase
+public class MsgPing : MsgBase
 {
     public MsgPing()
     {
-        protoName="MsgPing";
+        protoName = "MsgPing";
     }
 }
 
-public class MsgPong:MsgBase
+public class MsgPong : MsgBase
 {
     public MsgPong()
     {
-        protoName="MsgPong";
+        protoName = "MsgPong";
     }
 }

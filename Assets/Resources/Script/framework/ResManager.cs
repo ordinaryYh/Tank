@@ -6,6 +6,6 @@ public class ResManager : MonoBehaviour
 {
     public static GameObject LoadPrefab(string path)
     {
-        return Resources.Load("Prefab/TankPrefab/"+path) as GameObject;
+        return Resources.Load("Prefab/TankPrefab/" + path) as GameObject;
     }
 }

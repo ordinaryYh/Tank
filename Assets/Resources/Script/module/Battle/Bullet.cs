@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     //移动速度
-    public float speed=100f;
+    public float speed = 100f;
     //发射者
     public BaseTank tank;
     //炮弹模型
@@ -15,40 +15,40 @@ public class Bullet : MonoBehaviour
 
     public void Init()
     {
-        GameObject skinRes=Resources.Load("Prefab/BulletPrefab") as GameObject;
-        skin=Instantiate(skinRes);
-        skin.transform.parent=this.transform;
-        skin.transform.localPosition=Vector3.zero;
-        skin.transform.localEulerAngles=Vector3.zero;
+        GameObject skinRes = Resources.Load("Prefab/BulletPrefab") as GameObject;
+        skin = Instantiate(skinRes);
+        skin.transform.parent = this.transform;
+        skin.transform.localPosition = Vector3.zero;
+        skin.transform.localEulerAngles = Vector3.zero;
         //物理
-        rigidBody=gameObject.AddComponent<Rigidbody>();
-        rigidBody.useGravity=false;
+        rigidBody = gameObject.AddComponent<Rigidbody>();
+        rigidBody.useGravity = false;
     }
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position+=transform.forward*speed*Time.deltaTime;
+        transform.position += transform.forward * speed * Time.deltaTime;
     }
     void OnCollisionEnter(Collision other)
     {
-        GameObject collObj=other.gameObject;
-        BaseTank hitTank=collObj.GetComponent<BaseTank>();
-        if(hitTank==tank)
+        GameObject collObj = other.gameObject;
+        BaseTank hitTank = collObj.GetComponent<BaseTank>();
+        if (hitTank == tank)
         {
             return;
         }
-        if(hitTank!=null)
+        if (hitTank != null)
         {
             hitTank.Attacked(35);
         }
-        GameObject explode=Resources.Load("Prefab/fire") as GameObject;
-        Instantiate(explode,transform.position,transform.rotation);
+        GameObject explode = Resources.Load("Prefab/fire") as GameObject;
+        Instantiate(explode, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 }
