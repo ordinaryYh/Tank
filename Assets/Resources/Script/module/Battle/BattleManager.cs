@@ -16,6 +16,10 @@ public class BattleManager
         NetManager.AddMsgListener("MsgEnterBattle", OnMsgEnterBattle);
         NetManager.AddMsgListener("MsgBattleResult", OnMsgBattleResult);
         NetManager.AddMsgListener("MsgLeaveBattle", OnMsgLeaveBattle);
+
+        NetManager.AddMsgListener("MsgSyncTank", OnMsgSyncTank);
+        NetManager.AddMsgListener("MsgFire", OnMsgFire);
+        NetManager.AddMsgListener("MsgHit", OnMsgHit);
     }
 
     //添加坦克
@@ -150,5 +154,39 @@ public class BattleManager
         //删除坦克
         RemoveTank(msg.id);
         MonoBehaviour.Destroy(tank.gameObject);
+    }
+
+
+    //同步协议的几个回调函数
+    //收到同步协议
+    public static void OnMsgSyncTank(MsgBase msgBase)
+    {
+        MsgSyncTank msg = (MsgSyncTank)msgBase;
+        //不同步自己
+        if (msg.id == GameManager.id) return;
+        //查找坦克
+        SyncTank tank = (SyncTank)GetTank(msg.id);
+        if (tanks == null) return;
+        //移动同步
+        tank.SyncPos(msg);
+    }
+    //收到开火协议
+    public static void OnMsgFire(MsgBase msgBase)
+    {
+        MsgFire msg = (MsgFire)msgBase;
+        if (msg.id == GameManager.id) return;
+        SyncTank tank = (SyncTank)GetTank(msg.id);
+        if (tank == null) return;
+        //开火
+        tank.SyncFire(msg);
+    }
+    //收到击中协议
+    public static void OnMsgHit(MsgBase msgBase)
+    {
+        MsgHit msg = (MsgHit)msgBase;
+        BaseTank tank = GetTank(msg.id);
+        if (tank == null) return;
+        //被击中
+        tank.Attacked(msg.damage);
     }
 }

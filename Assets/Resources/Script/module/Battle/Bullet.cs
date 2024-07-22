@@ -45,10 +45,35 @@ public class Bullet : MonoBehaviour
         }
         if (hitTank != null)
         {
-            hitTank.Attacked(35);
+            //发送协议，这里不处理坦克的血量，由服务器来进行判断
+            SendMsgHit(tank, hitTank);
+            //hitTank.Attacked(35);
         }
         GameObject explode = Resources.Load("Prefab/fire") as GameObject;
         Instantiate(explode, transform.position, transform.rotation);
         Destroy(gameObject);
+    }
+
+    //发送伤害协议
+    void SendMsgHit(BaseTank tank, BaseTank hitTank)
+    {
+        if (hitTank == null || tank == null)
+        {
+            return;
+        }
+        //不是自己发出的炮弹
+        if (tank.id != GameManager.id)
+        {
+            return;
+        }
+        MsgHit msg = new MsgHit
+        {
+            targetId = hitTank.id,
+            id = tank.id,
+            x = transform.position.x,
+            y = transform.position.y,
+            z = transform.position.z
+        };
+        NetManager.Send(msg);
     }
 }

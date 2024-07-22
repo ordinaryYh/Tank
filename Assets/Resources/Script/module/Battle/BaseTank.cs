@@ -82,6 +82,7 @@ public class BaseTank : MonoBehaviour
     {
         return hp <= 0;
     }
+
     public void Attacked(float att)
     {
         if (IsDie())
