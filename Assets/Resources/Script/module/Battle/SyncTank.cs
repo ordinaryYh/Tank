@@ -36,24 +36,25 @@ public class SyncTank : BaseTank
         ForecastUpdate();
     }
 
-    //预测算法的实现，实现状态同步
+
     //更新位置
     public void ForecastUpdate()
     {
         //时间,将t归一化
         float t = (Time.time - forecastTime) / CtrlTank.syncInterval;
         t = Mathf.Clamp(t, 0f, 1f);
-        //计算预测要到达的位置
+        //移动到预测地点
         Vector3 pos = transform.position;
         pos = Vector3.Lerp(pos, forecastPos, t);
         transform.position = pos;
-        //计算预测要达到的旋转角度
+        //旋转到预测角度
         Quaternion quat = transform.rotation;
         Quaternion forecastQuat = Quaternion.Euler(forecastRot);
         quat = Quaternion.Lerp(quat, forecastQuat, t);
         transform.rotation = quat;
     }
 
+    //位置预测算法的实现
     //移动同步的函数
     public void SyncPos(MsgSyncTank msg)
     {
